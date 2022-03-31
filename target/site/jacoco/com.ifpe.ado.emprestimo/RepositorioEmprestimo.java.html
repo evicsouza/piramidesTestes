@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RepositorioEmprestimo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">integracao</a> &gt; <a href="index.source.html" class="el_package">com.ifpe.ado.emprestimo</a> &gt; <span class="el_source">RepositorioEmprestimo.java</span></div><h1>RepositorioEmprestimo.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.ifpe.ado.emprestimo;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.ifpe.ado.professor.RepositorioProfessor;
+import com.ifpe.conexaodb.Banco;
+import com.ifpe.emprestimo.Emprestimo;
+
+/**
+ *
+ * @author Aluno
+ */
+<span class="nc" id="L21">public class RepositorioEmprestimo extends Banco implements IRepositorioEmprestimo {</span>
+<span class="nc" id="L22">	int status = 0;</span>
+<span class="nc" id="L23">	String query = &quot;INSERT INTO emprestimo(siapeProf, codItem, dataEmp)&quot; + &quot;VALUES (?, ?, ?)&quot;;</span>
+<span class="nc" id="L24">	String queryRemove = &quot;DELETE FROM emprestimo WHERE codigo = ?&quot;;</span>
+	Emprestimo emprestimo;
+
+	@Override
+	public int efetuarEmprestimo(Emprestimo e) {
+
+		try {
+<span class="nc" id="L31">			super.abrirConexao();</span>
+<span class="nc" id="L32">		} catch (Exception ex) {</span>
+<span class="nc" id="L33">			Logger.getLogger(RepositorioProfessor.class.getName()).log(Level.SEVERE, null, ex);</span>
+		}
+<span class="nc" id="L35">		PreparedStatement ps = null;</span>
+
+		try {
+<span class="nc" id="L38">			ps = con.prepareStatement(query);</span>
+<span class="nc" id="L39">			ps.setString(1, e.getSiapeProf());</span>
+<span class="nc" id="L40">			ps.setString(2, e.getCodItem());</span>
+<span class="nc" id="L41">			ps.setString(3, e.getData());</span>
+<span class="nc" id="L42">			status = ps.executeUpdate();</span>
+<span class="nc" id="L43">		} catch (SQLException ex) {</span>
+<span class="nc" id="L44">			Logger.getLogger(RepositorioEmprestimo.class.getName()).log(Level.SEVERE, null, ex);</span>
+		} 
+
+		try {
+<span class="nc" id="L48">			super.fecharConexao();</span>
+<span class="nc" id="L49">		} catch (Exception ex) {</span>
+<span class="nc" id="L50">			Logger.getLogger(RepositorioEmprestimo.class.getName()).log(Level.SEVERE, null, ex);</span>
+		}
+<span class="nc" id="L52">		return status;</span>
+	}
+
+	@Override
+	public int removerEmprestimo(int id) {
+<span class="nc" id="L57">		int status = 0;</span>
+		try {
+<span class="nc" id="L59">			super.abrirConexao();</span>
+<span class="nc" id="L60">		} catch (Exception ex) {</span>
+<span class="nc" id="L61">			Logger.getLogger(RepositorioProfessor.class.getName()).log(Level.SEVERE, null, ex);</span>
+		}
+
+<span class="nc" id="L64">		PreparedStatement ps = null;</span>
+
+		try {
+<span class="nc" id="L67">			ps = con.prepareStatement(queryRemove);</span>
+			// ps.setInt(1, id);
+<span class="nc" id="L69">			id = Integer.parseInt(emprestimo.getCodItem());</span>
+<span class="nc" id="L70">			status = ps.executeUpdate();</span>
+<span class="nc" id="L71">		} catch (SQLException ex) {</span>
+<span class="nc" id="L72">			Logger.getLogger(RepositorioEmprestimo.class.getName()).log(Level.SEVERE, null, ex);</span>
+		}   
+
+		try {
+<span class="nc" id="L76">			super.fecharConexao();</span>
+<span class="nc" id="L77">		} catch (Exception ex) {</span>
+<span class="nc" id="L78">			Logger.getLogger(RepositorioEmprestimo.class.getName()).log(Level.SEVERE, null, ex);</span>
+		}
+<span class="nc" id="L80">		return status;</span>
+	}
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

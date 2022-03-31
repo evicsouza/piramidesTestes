@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Frame.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">integracao</a> &gt; <a href="index.source.html" class="el_package">com.ifpe.view</a> &gt; <span class="el_source">Frame.java</span></div><h1>Frame.java</h1><pre class="source lang-java linenums">package com.ifpe.view;
+
+import com.ifpe.conexaodb.Banco;
+import com.ifpe.emprestimo.Emprestimo;
+import com.ifpe.excecoes.SiapeInvalidoException;
+import com.ifpe.excecoes.TelefoneInvalidoException;
+import com.ifpe.facade.Facade;
+import com.ifpe.item.Item;
+import com.ifpe.professor.Professor;
+import com.ifpe.utils.DbUtils;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+
+public class Frame extends JFrame{
+
+private JMenuBar menubar;
+private static JTable tableProfessor;
+private static JTable tableEmprestimo;
+private static JTable tableItem;
+private JMenu menuCadastrar, menuRemover, menuEmprestimo;
+private JMenuItem menuItemCadastrarProfessor, menuItemCadastrarItem, menuItemRemoverProfessor, menuItemRemoverItem, menuItemCadastrarEmprestimo, menuItemRemoverEmprestimo;
+<span class="nc" id="L59">private JPanel panel1 = new JPanel();</span>
+<span class="nc" id="L60">private JPanel panel2 = new JPanel();</span>
+<span class="nc" id="L61">private JTextField txtNome = new JTextField(20);</span>
+<span class="nc" id="L62">private JTextField txtTelefone = new JTextField(20);</span>
+<span class="nc" id="L63">private JTextField txtSiape = new JTextField(20);</span>
+<span class="nc" id="L64">private JTextField txtTipoItem = new JTextField(20);</span>
+<span class="nc" id="L65">private JTextField txtCodigoItem = new JTextField(20);;</span>
+<span class="nc" id="L66">private JButton btnCadastrarProf = new JButton(&quot;Cadastrar&quot;);</span>
+<span class="nc" id="L67">private JButton btnCadastrarItem = new JButton(&quot;Cadastrar&quot;);</span>
+<span class="nc" id="L68">private JButton btnRemoverProf = new JButton(&quot;Remover&quot;);</span>
+<span class="nc" id="L69">private JButton btnRemoverItem = new JButton(&quot;Remover&quot;);</span>
+<span class="nc" id="L70">private static DbUtils db = new DbUtils();</span>
+
+<span class="nc" id="L72">public Frame(){</span>
+<span class="nc" id="L73">    setDefaultCloseOperation(EXIT_ON_CLOSE);   </span>
+<span class="nc" id="L74">    fillPanelProf();</span>
+<span class="nc" id="L75">    fillPanelItem();</span>
+<span class="nc" id="L76">    initMenu();</span>
+    
+<span class="nc" id="L78">    </span>
+}
+
+private void clearAllFieldsProfessor() {
+<span class="nc" id="L82">    txtNome.setText(&quot;&quot;);</span>
+<span class="nc" id="L83">    txtTelefone.setText(&quot;&quot;);</span>
+<span class="nc" id="L84">    txtSiape.setText(&quot;&quot;);</span>
+<span class="nc" id="L85">}</span>
+
+private void clearAllFieldsItem() {
+<span class="nc" id="L88">    txtCodigoItem.setText(&quot;&quot;);</span>
+<span class="nc" id="L89">    txtTipoItem.setText(&quot;&quot;);</span>
+    
+<span class="nc" id="L91">}</span>
+
+public void fillPanelProf() {
+<span class="nc" id="L94">    panel1.setBackground(new Color(231, 233, 236));</span>
+<span class="nc" id="L95">    panel1.setLayout(new GridBagLayout());</span>
+<span class="nc" id="L96">    GridBagConstraints gbc = new GridBagConstraints();</span>
+    
+   
+<span class="nc" id="L99">    gbc.insets = new Insets(5, 5, 5, 5);</span>
+    //
+<span class="nc" id="L101">    gbc.gridx = 0;</span>
+<span class="nc" id="L102">    gbc.gridy = 0;</span>
+<span class="nc" id="L103">    panel1.add(new JLabel(&quot;Nome: &quot;), gbc);</span>
+    
+<span class="nc" id="L105">    gbc.gridx = 1;</span>
+<span class="nc" id="L106">    panel1.add(txtNome, gbc);</span>
+    
+<span class="nc" id="L108">    gbc.gridx = 0;</span>
+<span class="nc" id="L109">    gbc.gridy = 1;</span>
+<span class="nc" id="L110">    panel1.add(new JLabel(&quot;Telefone: &quot;), gbc);</span>
+    
+<span class="nc" id="L112">    gbc.gridx = 1;</span>
+<span class="nc" id="L113">    panel1.add(txtTelefone, gbc);</span>
+    
+<span class="nc" id="L115">    gbc.gridx = 0;</span>
+<span class="nc" id="L116">    gbc.gridy = 2;</span>
+<span class="nc" id="L117">    panel1.add(new JLabel(&quot;Siape: &quot;), gbc);</span>
+    
+<span class="nc" id="L119">    gbc.gridx = 1;</span>
+<span class="nc" id="L120">    panel1.add(txtSiape, gbc);</span>
+    
+<span class="nc" id="L122">    gbc.gridx = 1;</span>
+<span class="nc" id="L123">    gbc.gridy = 3;</span>
+<span class="nc" id="L124">    panel1.add(btnCadastrarProf, gbc);</span>
+
+    
+<span class="nc" id="L127">    gbc.gridx = 0;</span>
+<span class="nc" id="L128">    gbc.gridy = 2;</span>
+<span class="nc" id="L129">    gbc.gridwidth = 2;</span>
+<span class="nc" id="L130">    gbc.anchor = GridBagConstraints.WEST;</span>
+    
+<span class="nc" id="L132">    panel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), </span>
+<span class="nc" id="L133">            &quot;Cadastro de Professores&quot;));</span>
+    
+<span class="nc" id="L135">    pack();</span>
+    
+    
+<span class="nc" id="L138">}</span>
+
+public void fillPanelItem() {
+    
+    
+<span class="nc" id="L143">    panel2.setBackground(new Color(231, 233, 236));</span>
+<span class="nc" id="L144">    panel2.setLayout(new GridBagLayout());</span>
+    
+    
+<span class="nc" id="L147">    GridBagConstraints gbc = new GridBagConstraints();</span>
+    
+   
+<span class="nc" id="L150">    gbc.insets = new Insets(5, 5, 5, 5);</span>
+    //
+<span class="nc" id="L152">    gbc.gridx = 0;</span>
+<span class="nc" id="L153">    gbc.gridy = 0;</span>
+    
+<span class="nc" id="L155">    panel2.add(new JLabel(&quot;Tipo: &quot;), gbc);</span>
+    
+<span class="nc" id="L157">    gbc.gridx = 1;</span>
+<span class="nc" id="L158">    panel2.add(txtTipoItem, gbc);</span>
+    
+<span class="nc" id="L160">    gbc.gridx = 0;</span>
+<span class="nc" id="L161">    gbc.gridy = 1;</span>
+<span class="nc" id="L162">    panel2.add(new JLabel(&quot;C�digo: &quot;), gbc);</span>
+    
+<span class="nc" id="L164">    gbc.gridx = 1;</span>
+<span class="nc" id="L165">    panel2.add(txtCodigoItem, gbc);</span>
+    
+<span class="nc" id="L167">    gbc.gridx = 1;</span>
+<span class="nc" id="L168">    gbc.gridy = 2;</span>
+<span class="nc" id="L169">    panel2.add(btnCadastrarItem, gbc);</span>
+  
+<span class="nc" id="L171">    gbc.gridx = 0;</span>
+<span class="nc" id="L172">    gbc.gridy = 2;</span>
+<span class="nc" id="L173">    gbc.gridwidth = 2;</span>
+<span class="nc" id="L174">    gbc.anchor = GridBagConstraints.WEST;</span>
+    
+<span class="nc" id="L176">    panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), </span>
+<span class="nc" id="L177">            &quot;Cadastro de Itens&quot;));</span>
+    
+<span class="nc" id="L179">    pack();</span>
+    
+<span class="nc" id="L181">}</span>
+
+
+private class MenuAction implements ActionListener {
+
+    private JPanel panel;
+<span class="nc" id="L187">    private MenuAction(JPanel pnl) {</span>
+<span class="nc" id="L188">        this.panel = pnl;</span>
+        
+<span class="nc" id="L190">    }</span>
+    @Override
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L193">        changePanel(panel);</span>
+
+<span class="nc" id="L195">    }</span>
+
+}
+
+
+private void initMenu() {
+<span class="nc" id="L201">    menubar = new JMenuBar();</span>
+<span class="nc" id="L202">    menuCadastrar = new JMenu(&quot;Cadastrar&quot;);</span>
+<span class="nc" id="L203">    menuRemover = new JMenu(&quot;Remover&quot;);</span>
+<span class="nc" id="L204">    menuEmprestimo = new JMenu(&quot;Empr�stimo&quot;);</span>
+<span class="nc" id="L205">    menuItemCadastrarProfessor = new JMenuItem(&quot;Professor&quot;);</span>
+<span class="nc" id="L206">    menuItemCadastrarItem = new JMenuItem(&quot;Item&quot;);</span>
+<span class="nc" id="L207">    menuItemRemoverProfessor = new JMenuItem(&quot;Professor&quot;);</span>
+<span class="nc" id="L208">    menuItemRemoverItem = new JMenuItem(&quot;Item&quot;);</span>
+<span class="nc" id="L209">    menuItemCadastrarEmprestimo = new JMenuItem(&quot;Efetuar Empr�stimo&quot;);</span>
+<span class="nc" id="L210">    menuItemRemoverEmprestimo = new JMenuItem(&quot;Finalizar Empr�stimo&quot;);</span>
+<span class="nc" id="L211">    menubar.add(menuCadastrar);</span>
+<span class="nc" id="L212">    menubar.add(menuRemover);</span>
+<span class="nc" id="L213">    menubar.add(menuEmprestimo);</span>
+<span class="nc" id="L214">    menuCadastrar.add(menuItemCadastrarProfessor);</span>
+<span class="nc" id="L215">    menuCadastrar.add(menuItemCadastrarItem);</span>
+<span class="nc" id="L216">    menuRemover.add(menuItemRemoverProfessor);</span>
+<span class="nc" id="L217">    menuRemover.add(menuItemRemoverItem);</span>
+<span class="nc" id="L218">    menuEmprestimo.add(menuItemCadastrarEmprestimo);</span>
+<span class="nc" id="L219">    menuEmprestimo.add(menuItemRemoverEmprestimo);</span>
+<span class="nc" id="L220">    setJMenuBar(menubar);</span>
+<span class="nc" id="L221">    menuItemCadastrarProfessor.addActionListener(new MenuAction(panel1));</span>
+<span class="nc" id="L222">    menuItemCadastrarItem.addActionListener(new MenuAction(panel2));</span>
+    
+
+<span class="nc" id="L225">}</span>
+
+private void changePanel(JPanel panel) {
+<span class="nc" id="L228">    getContentPane().removeAll();</span>
+<span class="nc" id="L229">    getContentPane().add(panel);</span>
+<span class="nc" id="L230">    getContentPane().revalidate();</span>
+<span class="nc" id="L231">    getContentPane().repaint();</span>
+<span class="nc" id="L232">}</span>
+
+
+
+public static void main(String[] args) {
+   
+<span class="nc" id="L238">    Frame frame = new Frame();</span>
+<span class="nc" id="L239">    Facade fachada = new Facade();</span>
+<span class="nc" id="L240">    frame.setBackground(Color.WHITE);</span>
+<span class="nc" id="L241">    JLabel t = new JLabel(new ImageIcon(&quot;images/empr�stimo.png&quot;));</span>
+<span class="nc" id="L242">    frame.add(t);</span>
+    
+<span class="nc" id="L244">    frame.btnCadastrarProf.addActionListener(new ActionListener() {</span>
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+<span class="nc" id="L248">                String nome = frame.txtNome.getText();</span>
+<span class="nc" id="L249">                String telefone = frame.txtTelefone.getText();</span>
+<span class="nc" id="L250">                String siape = frame.txtSiape.getText();</span>
+<span class="nc" id="L251">                Professor p = new Professor(nome, telefone, siape);</span>
+<span class="nc" id="L252">                int res = fachada.inserirProfessor(p);</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">                if(res &gt; 0) {</span>
+<span class="nc" id="L254">                    GuiUtils.mostraMsgSucesso();</span>
+<span class="nc" id="L255">                    frame.clearAllFieldsProfessor();</span>
+<span class="nc" id="L256">                } else {</span>
+<span class="nc" id="L257">                    GuiUtils.mostraMsgFalhaSiapeIgual();</span>
+                }
+<span class="nc" id="L259">            } catch (TelefoneInvalidoException ex) {</span>
+<span class="nc" id="L260">                GuiUtils.mostraMsgTelefoneInvalido();</span>
+<span class="nc" id="L261">                Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L262">            } catch (SiapeInvalidoException ex) {</span>
+<span class="nc" id="L263">                GuiUtils.mostraMsgSiapeInvalido();</span>
+<span class="nc" id="L264">                Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);</span>
+            }
+<span class="nc" id="L266">        }</span>
+    });
+    
+<span class="nc" id="L269">    frame.btnCadastrarItem.addActionListener(new ActionListener() {</span>
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            
+<span class="nc" id="L273">            int res = fachada.inserirItem(new Item(frame.txtCodigoItem.getText(), frame.txtTipoItem.getText()));</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">            if(res &gt; 0) {</span>
+<span class="nc" id="L275">                GuiUtils.mostraMsgSucesso();</span>
+<span class="nc" id="L276">                frame.clearAllFieldsItem();</span>
+<span class="nc" id="L277">            } else {</span>
+<span class="nc" id="L278">                GuiUtils.mostraMsgFalhaCodigoIgual();</span>
+            }
+<span class="nc" id="L280">        }</span>
+    });
+    
+<span class="nc" id="L283">    frame.menuItemRemoverProfessor.addActionListener(new ActionListener() {</span>
+        @Override
+        public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L286">            String siapeRemover = GuiUtils.recebeSiapeParaRemoverProfessor();</span>
+<span class="nc" id="L287">            int res = fachada.removerProfessor(siapeRemover);</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">            if(res &gt; 0) {</span>
+<span class="nc" id="L289">                GuiUtils.mostraMsgSucesso();</span>
+<span class="nc" id="L290">                frame.clearAllFieldsProfessor();</span>
+<span class="nc" id="L291">            } else {</span>
+<span class="nc" id="L292">               GuiUtils.mostraMsgFalhaAoRemoverProfessor();</span>
+            }
+<span class="nc" id="L294">        }</span>
+    });
+    
+<span class="nc" id="L297">    frame.menuItemRemoverItem.addActionListener(new ActionListener() {</span>
+        @Override
+        public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L300">            String codigo = GuiUtils.recebeCodigoParaRemoverItem();</span>
+<span class="nc" id="L301">            int res = fachada.removerItem(codigo);</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">            if(res &gt; 0) {</span>
+<span class="nc" id="L303">                GuiUtils.mostraMsgSucesso();</span>
+<span class="nc" id="L304">                frame.clearAllFieldsItem();</span>
+<span class="nc" id="L305">            } else {</span>
+<span class="nc" id="L306">                GuiUtils.mostraMsgFalhaAoRemoverItem();</span>
+            }
+<span class="nc" id="L308">        }</span>
+    });
+    
+<span class="nc" id="L311">    frame.menuItemCadastrarEmprestimo.addActionListener(new ActionListener() {</span>
+        @Override
+        public void actionPerformed(ActionEvent e) {
+           
+<span class="nc" id="L315">            ResultSet rs = db.listar(DbUtils.selectProfessor());</span>
+            try {
+<span class="nc" id="L317">                tableProfessor = new JTable(db.buildTableModel(rs));</span>
+<span class="nc" id="L318">                int ans = GuiUtils.mostraTabelaProfessor(tableProfessor);</span>
+                
+<span class="nc bnc" id="L320" title="All 2 branches missed.">                if(ans == JOptionPane.YES_OPTION) {</span>
+<span class="nc" id="L321">                	DefaultTableModel defaultTableModel = (DefaultTableModel) tableProfessor.getModel();</span>
+<span class="nc" id="L322">                	Vector v = defaultTableModel.getDataVector().get(tableProfessor.getSelectedRow());</span>
+<span class="nc" id="L323">                    String siapeProf = v.get(v.size()-1).toString();</span>
+<span class="nc" id="L324">                    ResultSet rsItem = db.listar(DbUtils.selectItem());</span>
+<span class="nc" id="L325">                    tableItem = new JTable(db.buildTableModel(rsItem));</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">                    if(tableItem.getRowCount() == 0) {</span>
+<span class="nc" id="L327">                        GuiUtils.mostraMsgTodosItensEmprestados();</span>
+<span class="nc" id="L328">                    } else {</span>
+<span class="nc" id="L329">                        int ansItem = GuiUtils.mostraTabelaItem(tableItem);</span>
+<span class="nc bnc" id="L330" title="All 2 branches missed.">                        if(ansItem == JOptionPane.YES_OPTION) {</span>
+<span class="nc" id="L331">                        	DefaultTableModel defaultTableModelItem = (DefaultTableModel) tableItem.getModel();</span>
+<span class="nc" id="L332">                        	Vector vItem = defaultTableModelItem.getDataVector().get(tableItem.getSelectedRow());</span>
+<span class="nc" id="L333">                            String codItem = vItem.get(0).toString();</span>
+<span class="nc" id="L334">                            int finalAns = GuiUtils.mostraConfirmacaoEmprestimo(siapeProf, codItem);</span>
+<span class="nc bnc" id="L335" title="All 2 branches missed.">                            if(finalAns == JOptionPane.YES_OPTION) {</span>
+<span class="nc" id="L336">                                fachada.inserirEmprestimo(new Emprestimo(siapeProf, codItem, new Timestamp(System.currentTimeMillis()).toString()));</span>
+<span class="nc" id="L337">                                GuiUtils.mostraMsgSucesso();</span>
+                            }
+                        }
+                    }
+                }
+<span class="nc" id="L342">            } catch (SQLException ex) {</span>
+<span class="nc" id="L343">                Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L344">            } catch (Exception ex) {</span>
+<span class="nc" id="L345">                Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);</span>
+            }
+<span class="nc" id="L347">        }</span>
+    });
+    
+<span class="nc" id="L350">    frame.menuItemRemoverEmprestimo.addActionListener(new ActionListener() {</span>
+        @Override
+        public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L353">            ResultSet rs = db.listar(DbUtils.selectEmprestimo());</span>
+            try {
+<span class="nc" id="L355">                tableEmprestimo = new JTable(db.buildTableModel(rs));</span>
+<span class="nc" id="L356">                int ans = GuiUtils.mostraTabelaEmprestimo(tableEmprestimo);</span>
+<span class="nc" id="L357">                DefaultTableModel defaultTableModelEmp = (DefaultTableModel) tableEmprestimo.getModel();</span>
+<span class="nc" id="L358">            	Vector vEmp = defaultTableModelEmp.getDataVector().get(tableEmprestimo.getSelectedRow());</span>
+                //int codigoEmp = (int)tableEmprestimo.getValueAt(tableEmprestimo.getSelectedRow(), tableEmprestimo.getSelectedColumn());
+<span class="nc" id="L360">            	int codigoEmp = (int) vEmp.get(0);</span>
+<span class="nc" id="L361">                int confirmacao = GuiUtils.mostraConfirmacaoRemoverEmprestimo(codigoEmp);</span>
+<span class="nc bnc" id="L362" title="All 2 branches missed.">                if(confirmacao == JOptionPane.YES_OPTION) {</span>
+<span class="nc" id="L363">                    int resultadoRemocaoEmp = fachada.removerEmprestimo(codigoEmp);</span>
+<span class="nc bnc" id="L364" title="All 2 branches missed.">                    if(resultadoRemocaoEmp &gt; 0) {</span>
+<span class="nc" id="L365">                        GuiUtils.mostraMsgSucesso();</span>
+                    }
+                }
+<span class="nc" id="L368">            } catch (SQLException ex) {</span>
+<span class="nc" id="L369">                Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L370">            } catch (Exception ex) {</span>
+<span class="nc" id="L371">                Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);</span>
+            }
+<span class="nc" id="L373">        }</span>
+    });
+
+<span class="nc" id="L376">    frame.setSize(690, 500);</span>
+<span class="nc" id="L377">    frame.getContentPane().setBackground(Color.WHITE);</span>
+<span class="nc" id="L378">    Image icon = Toolkit.getDefaultToolkit().getImage(&quot;images/icon.png&quot;);</span>
+<span class="nc" id="L379">    frame.setIconImage(icon);</span>
+<span class="nc" id="L380">    frame.setTitle(&quot;IFEmpr�stimo&quot;);</span>
+<span class="nc" id="L381">    frame.setVisible(true);</span>
+    
+<span class="nc" id="L383">}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

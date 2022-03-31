@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RepositorioItem.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">integracao</a> &gt; <a href="index.source.html" class="el_package">com.ifpe.ado.item</a> &gt; <span class="el_source">RepositorioItem.java</span></div><h1>RepositorioItem.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.ifpe.ado.item;
+
+import com.ifpe.ado.professor.RepositorioProfessor;
+import com.ifpe.conexaodb.Banco;
+import com.ifpe.item.Item;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author Humberto
+ */
+<span class="nc" id="L20">public class RepositorioItem extends Banco implements IRepositorioItem{</span>
+<span class="nc" id="L21">    int status = 0;</span>
+<span class="nc" id="L22">    String query = &quot;INSERT INTO item(codigo, tipo)&quot; + &quot;VALUES (?, ?)&quot;;</span>
+<span class="nc" id="L23">    String queryRemove = &quot;DELETE FROM item WHERE codigo = ?&quot;;</span>
+    
+    @Override
+    public int inserir(Item i) {
+        try {
+<span class="nc" id="L28">            super.abrirConexao();</span>
+<span class="nc" id="L29">        } catch (Exception ex) {</span>
+<span class="nc" id="L30">            Logger.getLogger(RepositorioItem.class.getName()).log(Level.SEVERE, null, ex);</span>
+        }
+<span class="nc" id="L32">         PreparedStatement ps = null;</span>
+               
+        try {
+<span class="nc" id="L35">            ps = con.prepareStatement(query);</span>
+<span class="nc" id="L36">            ps.setString(1, i.getCodigoItem());</span>
+<span class="nc" id="L37">            ps.setString(2, i.getTipoItem());</span>
+<span class="nc" id="L38">            status = ps.executeUpdate();</span>
+<span class="nc" id="L39">            System.out.println(status);</span>
+<span class="nc" id="L40">        } catch (SQLException ex) {</span>
+<span class="nc" id="L41">            Logger.getLogger(RepositorioItem.class.getName()).log(Level.SEVERE, null, ex);</span>
+        } 
+        
+         try {
+<span class="nc" id="L45">            super.fecharConexao();</span>
+<span class="nc" id="L46">        } catch (Exception ex) {</span>
+<span class="nc" id="L47">            Logger.getLogger(RepositorioItem.class.getName()).log(Level.SEVERE, null, ex);</span>
+        }
+<span class="nc" id="L49">         return status;</span>
+    }
+
+    @Override
+    public int remover(String codigo) {
+<span class="nc" id="L54">       int status = 0;</span>
+        try {
+<span class="nc" id="L56">            super.abrirConexao();</span>
+<span class="nc" id="L57">        } catch (Exception ex) {</span>
+<span class="nc" id="L58">            Logger.getLogger(RepositorioItem.class.getName()).log(Level.SEVERE, null, ex);</span>
+        }
+        
+<span class="nc" id="L61">        PreparedStatement ps = null;</span>
+               
+        try {
+<span class="nc" id="L64">            ps = con.prepareStatement(queryRemove);</span>
+<span class="nc" id="L65">            ps.setString(1, codigo);</span>
+<span class="nc" id="L66">            status = ps.executeUpdate();</span>
+<span class="nc" id="L67">        } catch (SQLException ex) {</span>
+<span class="nc" id="L68">            Logger.getLogger(RepositorioItem.class.getName()).log(Level.SEVERE, null, ex);</span>
+        }   
+        
+        try {
+<span class="nc" id="L72">            super.fecharConexao();</span>
+<span class="nc" id="L73">        } catch (Exception ex) {</span>
+<span class="nc" id="L74">            Logger.getLogger(RepositorioItem.class.getName()).log(Level.SEVERE, null, ex);</span>
+        }
+<span class="nc" id="L76">        return status;</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

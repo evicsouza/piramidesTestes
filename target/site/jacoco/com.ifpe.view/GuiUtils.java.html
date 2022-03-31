@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GuiUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">integracao</a> &gt; <a href="index.source.html" class="el_package">com.ifpe.view</a> &gt; <span class="el_source">GuiUtils.java</span></div><h1>GuiUtils.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.ifpe.view;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
+/**
+ *
+ * @author Aluno
+ */
+<span class="nc" id="L19">public class GuiUtils {</span>
+<span class="nc" id="L20">    ImageIcon icon32 = new ImageIcon(getClass().getResource(&quot;images/icon32.png&quot;));</span>
+    
+    public static void mostraMsgSucesso() {
+<span class="nc" id="L23">         JOptionPane.showMessageDialog(null, &quot;Opera��o realizada com sucesso!&quot;, &quot;IFEmpr�stimo&quot;, JOptionPane.INFORMATION_MESSAGE,</span>
+<span class="nc" id="L24">                        new ImageIcon(&quot;images/icon32.png&quot;));</span>
+<span class="nc" id="L25">    }</span>
+    
+    public static void mostraMsgFalhaSiapeIgual() {
+<span class="nc" id="L28">         JOptionPane.showMessageDialog(null, &quot;A opera��o falhou. Verifique se os campos est�o &quot;</span>
+<span class="nc" id="L29">                        + &quot;corretos ou se j� n�o existe um SIAPE com esse n�mero.&quot;, &quot;IFEmpr�stimo&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L30">    }</span>
+    
+    public static void mostraMsgFalhaCodigoIgual() {
+<span class="nc" id="L33">         JOptionPane.showMessageDialog(null, &quot;A opera��o falhou. Verifique se os campos est�o &quot;</span>
+<span class="nc" id="L34">                        + &quot;corretos ou se j� n�o existe um item com esse código.&quot;, &quot;IFEmpr�stimo&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L35">    }</span>
+     
+    public static void mostraMsgFalhaAoRemoverProfessor() {
+<span class="nc" id="L38">          JOptionPane.showMessageDialog(null, &quot;A opera��oo falhou. Verifique se o SIAPE est� correto ou se n�o existe um &quot;</span>
+<span class="nc" id="L39">                        + &quot;empr�stimo associado a este professor.&quot;, &quot;IFEmpr�stimo&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L40">    }</span>
+    
+    public static void mostraMsgFalhaAoRemoverItem() {
+<span class="nc" id="L43">         JOptionPane.showMessageDialog(null, &quot;A opera��o falhou. Verifique se o c�digo est� correto ou se n�o existe um &quot;</span>
+<span class="nc" id="L44">                        + &quot;empr�stimo associado a este item.&quot;, &quot;IFEmpr�stimo&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L45">    }</span>
+    
+    public static String recebeSiapeParaRemoverProfessor() {
+<span class="nc" id="L48">        return (String)JOptionPane.showInputDialog(null, &quot;Siape do professor: &quot;, &quot;IFEmpr�stimo&quot;, JOptionPane.QUESTION_MESSAGE,</span>
+<span class="nc" id="L49">                    new ImageIcon(&quot;images/icon32.png&quot;), null, null);</span>
+    }
+    
+    public static String recebeCodigoParaRemoverItem() {
+<span class="nc" id="L53">        return (String)JOptionPane.showInputDialog(null, &quot;C�digo do item: &quot;, &quot;IFEmpr�stimo&quot;, JOptionPane.QUESTION_MESSAGE,</span>
+<span class="nc" id="L54">                    new ImageIcon(&quot;images/icon32.png&quot;), null, null);</span>
+    }
+    
+    public static int mostraTabelaProfessor(JTable professores) {
+<span class="nc" id="L58">        return JOptionPane.showConfirmDialog(null, new JScrollPane(professores), &quot;IFEmpr�stimo&quot;, JOptionPane.INFORMATION_MESSAGE,</span>
+<span class="nc" id="L59">                        JOptionPane.QUESTION_MESSAGE, new ImageIcon(&quot;images/icon32.png&quot;));</span>
+    }
+    
+    public static int mostraTabelaItem(JTable itens) {
+<span class="nc" id="L63">        return JOptionPane.showConfirmDialog(null, new JScrollPane(itens), &quot;IFEmpr�stimo&quot;, JOptionPane.INFORMATION_MESSAGE,</span>
+<span class="nc" id="L64">                            JOptionPane.QUESTION_MESSAGE, new ImageIcon(&quot;images/icon32.png&quot;));</span>
+    }
+    
+    public static int mostraTabelaEmprestimo(JTable emprestimos) {
+<span class="nc" id="L68">        return JOptionPane.showConfirmDialog(null, new JScrollPane(emprestimos), &quot;IFEmpr�stimo&quot;, JOptionPane.INFORMATION_MESSAGE,</span>
+<span class="nc" id="L69">                        JOptionPane.QUESTION_MESSAGE, new ImageIcon(&quot;images/icon32.png&quot;));</span>
+    }
+    public static int mostraConfirmacaoEmprestimo(String siapeProf, String codItem) {
+<span class="nc" id="L72">        return JOptionPane.showConfirmDialog(null, &quot;Empr�stimo para o siape &quot;+siapeProf+&quot; do item &quot;</span>
+<span class="nc" id="L73">                                + &quot;com c�digo &quot;+codItem, &quot;IFEmpr�stimo&quot;, JOptionPane.INFORMATION_MESSAGE, JOptionPane.QUESTION_MESSAGE, new ImageIcon(&quot;images/icon32.png&quot;));</span>
+    }
+    
+    
+    public static int mostraConfirmacaoRemoverEmprestimo(int codEmp) {
+<span class="nc" id="L78">        return JOptionPane.showConfirmDialog(null, &quot;Encerrar empr�stimo com o c�digo &quot;+codEmp, &quot;IFEmpr�stimo&quot;, JOptionPane.INFORMATION_MESSAGE, JOptionPane.QUESTION_MESSAGE, new ImageIcon(&quot;images/icon32.png&quot;));</span>
+    }
+    
+    public static void mostraMsgTodosItensEmprestados() {
+<span class="nc" id="L82">         JOptionPane.showMessageDialog(null, &quot;N�o h� mais itens dispon�veis para empr�stimo.&quot;, &quot;IFEmpr�stimo&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L83">    }</span>
+    
+    
+    public static void mostraMsgTelefoneInvalido() {
+<span class="nc" id="L87">         JOptionPane.showMessageDialog(null, &quot;O telefone digitado n�o � v�lido.&quot;, &quot;IFEmpr�stimo&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L88">    }</span>
+    
+    public static void mostraMsgSiapeInvalido() {
+<span class="nc" id="L91">         JOptionPane.showMessageDialog(null, &quot;O siape digitado n�o � v�liddo.&quot;, &quot;IFEmpr�stimo&quot;, JOptionPane.ERROR_MESSAGE);</span>
+<span class="nc" id="L92">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Facade.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">integracao</a> &gt; <a href="index.source.html" class="el_package">com.ifpe.facade</a> &gt; <span class="el_source">Facade.java</span></div><h1>Facade.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.ifpe.facade;
+
+import com.ifpe.emprestimo.ControladorEmprestimo;
+import com.ifpe.emprestimo.Emprestimo;
+import com.ifpe.item.ControladorItem;
+import com.ifpe.item.Item;
+import com.ifpe.professor.ControladorProfessor;
+import com.ifpe.professor.Professor;
+
+/**
+ *
+ * @author Humberto
+ */
+public class Facade implements IFacade{
+
+	private ControladorProfessor controlProfessor;
+	private ControladorItem controlItem;
+	private ControladorEmprestimo controlEmprestimo;
+
+<span class="nc" id="L25">	public Facade() {</span>
+<span class="nc" id="L26">		controlProfessor = new ControladorProfessor();</span>
+<span class="nc" id="L27">		controlItem = new ControladorItem();</span>
+<span class="nc" id="L28">		controlEmprestimo = new ControladorEmprestimo();</span>
+<span class="nc" id="L29">	}</span>
+
+	@Override
+	public int inserirProfessor(Professor p) {
+<span class="nc" id="L33">		return controlProfessor.inserir(p);</span>
+	}
+
+	@Override
+	public int removerProfessor(String siape) {
+<span class="nc" id="L38">		return controlProfessor.remover(siape);</span>
+	}
+
+	@Override
+	public int inserirItem(Item i) {
+<span class="nc" id="L43">		return controlItem.inserir(i);</span>
+	}
+
+	@Override
+	public int removerItem(String codigo) {
+<span class="nc" id="L48">		return controlItem.remover(codigo);</span>
+	}
+
+	@Override
+	public int inserirEmprestimo(Emprestimo e) {
+<span class="nc" id="L53">		return controlEmprestimo.inserir(e);</span>
+	}
+
+	@Override
+	public int removerEmprestimo(int id) {
+<span class="nc" id="L58">		return controlEmprestimo.remover(id);</span>
+	}
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
