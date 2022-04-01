@@ -5,81 +5,79 @@
  */
 package com.ifpe.ado.emprestimo;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.ifpe.ado.professor.RepositorioProfessor;
 import com.ifpe.conexaodb.Banco;
 import com.ifpe.emprestimo.Emprestimo;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Aluno
  */
 <span class="nc" id="L21">public class RepositorioEmprestimo extends Banco implements IRepositorioEmprestimo {</span>
-<span class="nc" id="L22">	int status = 0;</span>
-<span class="nc" id="L23">	String query = &quot;INSERT INTO emprestimo(siapeProf, codItem, dataEmp)&quot; + &quot;VALUES (?, ?, ?)&quot;;</span>
-<span class="nc" id="L24">	String queryRemove = &quot;DELETE FROM emprestimo WHERE codigo = ?&quot;;</span>
-	Emprestimo emprestimo;
+<span class="nc" id="L22">    int status = 0;</span>
+<span class="nc" id="L23">    String query = &quot;INSERT INTO emprestimo(siapeProf, codItem, dataEmp)&quot; + &quot;VALUES (?, ?, ?)&quot;;</span>
+<span class="nc" id="L24">    String queryRemove = &quot;DELETE FROM emprestimo WHERE codigo = ?&quot;;</span>
+    
+    @Override
+    public int efetuarEmprestimo(Emprestimo e) {
+        
+        try {
+<span class="nc" id="L30">            super.abrirConexao();</span>
+<span class="nc" id="L31">        } catch (Exception ex) {</span>
+<span class="nc" id="L32">            Logger.getLogger(RepositorioProfessor.class.getName()).log(Level.SEVERE, null, ex);</span>
+        }
+<span class="nc" id="L34">         PreparedStatement ps = null;</span>
+               
+        try {
+<span class="nc" id="L37">            ps = con.prepareStatement(query);</span>
+<span class="nc" id="L38">            ps.setString(1, e.getSiapeProf());</span>
+<span class="nc" id="L39">            ps.setString(2, e.getCodItem());</span>
+<span class="nc" id="L40">            ps.setString(3, e.getData());</span>
+<span class="nc" id="L41">            status = ps.executeUpdate();</span>
+<span class="nc" id="L42">        } catch (SQLException ex) {</span>
+<span class="nc" id="L43">            Logger.getLogger(RepositorioEmprestimo.class.getName()).log(Level.SEVERE, null, ex);</span>
+        } 
+        
+         try {
+<span class="nc" id="L47">            super.fecharConexao();</span>
+<span class="nc" id="L48">        } catch (Exception ex) {</span>
+<span class="nc" id="L49">            Logger.getLogger(RepositorioEmprestimo.class.getName()).log(Level.SEVERE, null, ex);</span>
+        }
+<span class="nc" id="L51">         return status;</span>
+    }
 
-	@Override
-	public int efetuarEmprestimo(Emprestimo e) {
-
-		try {
-<span class="nc" id="L31">			super.abrirConexao();</span>
-<span class="nc" id="L32">		} catch (Exception ex) {</span>
-<span class="nc" id="L33">			Logger.getLogger(RepositorioProfessor.class.getName()).log(Level.SEVERE, null, ex);</span>
-		}
-<span class="nc" id="L35">		PreparedStatement ps = null;</span>
-
-		try {
-<span class="nc" id="L38">			ps = con.prepareStatement(query);</span>
-<span class="nc" id="L39">			ps.setString(1, e.getSiapeProf());</span>
-<span class="nc" id="L40">			ps.setString(2, e.getCodItem());</span>
-<span class="nc" id="L41">			ps.setString(3, e.getData());</span>
-<span class="nc" id="L42">			status = ps.executeUpdate();</span>
-<span class="nc" id="L43">		} catch (SQLException ex) {</span>
-<span class="nc" id="L44">			Logger.getLogger(RepositorioEmprestimo.class.getName()).log(Level.SEVERE, null, ex);</span>
-		} 
-
-		try {
-<span class="nc" id="L48">			super.fecharConexao();</span>
-<span class="nc" id="L49">		} catch (Exception ex) {</span>
-<span class="nc" id="L50">			Logger.getLogger(RepositorioEmprestimo.class.getName()).log(Level.SEVERE, null, ex);</span>
-		}
-<span class="nc" id="L52">		return status;</span>
-	}
-
-	@Override
-	public int removerEmprestimo(int id) {
-<span class="nc" id="L57">		int status = 0;</span>
-		try {
-<span class="nc" id="L59">			super.abrirConexao();</span>
-<span class="nc" id="L60">		} catch (Exception ex) {</span>
-<span class="nc" id="L61">			Logger.getLogger(RepositorioProfessor.class.getName()).log(Level.SEVERE, null, ex);</span>
-		}
-
-<span class="nc" id="L64">		PreparedStatement ps = null;</span>
-
-		try {
-<span class="nc" id="L67">			ps = con.prepareStatement(queryRemove);</span>
-			// ps.setInt(1, id);
-<span class="nc" id="L69">			id = Integer.parseInt(emprestimo.getCodItem());</span>
-<span class="nc" id="L70">			status = ps.executeUpdate();</span>
-<span class="nc" id="L71">		} catch (SQLException ex) {</span>
-<span class="nc" id="L72">			Logger.getLogger(RepositorioEmprestimo.class.getName()).log(Level.SEVERE, null, ex);</span>
-		}   
-
-		try {
-<span class="nc" id="L76">			super.fecharConexao();</span>
-<span class="nc" id="L77">		} catch (Exception ex) {</span>
-<span class="nc" id="L78">			Logger.getLogger(RepositorioEmprestimo.class.getName()).log(Level.SEVERE, null, ex);</span>
-		}
-<span class="nc" id="L80">		return status;</span>
-	}
-
-
+    @Override
+    public int removerEmprestimo(int id) {
+<span class="nc" id="L56">        int status = 0;</span>
+        try {
+<span class="nc" id="L58">            super.abrirConexao();</span>
+<span class="nc" id="L59">        } catch (Exception ex) {</span>
+<span class="nc" id="L60">            Logger.getLogger(RepositorioProfessor.class.getName()).log(Level.SEVERE, null, ex);</span>
+        }
+        
+<span class="nc" id="L63">        PreparedStatement ps = null;</span>
+               
+        try {
+<span class="nc" id="L66">            ps = con.prepareStatement(queryRemove);</span>
+<span class="nc" id="L67">            ps.setInt(1, id);</span>
+<span class="nc" id="L68">            status = ps.executeUpdate();</span>
+<span class="nc" id="L69">        } catch (SQLException ex) {</span>
+<span class="nc" id="L70">            Logger.getLogger(RepositorioEmprestimo.class.getName()).log(Level.SEVERE, null, ex);</span>
+        }   
+        
+        try {
+<span class="nc" id="L74">            super.fecharConexao();</span>
+<span class="nc" id="L75">        } catch (Exception ex) {</span>
+<span class="nc" id="L76">            Logger.getLogger(RepositorioEmprestimo.class.getName()).log(Level.SEVERE, null, ex);</span>
+        }
+<span class="nc" id="L78">        return status;</span>
+    }
+     
+    
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

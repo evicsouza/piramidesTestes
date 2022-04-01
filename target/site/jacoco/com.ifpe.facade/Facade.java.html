@@ -17,47 +17,47 @@ import com.ifpe.professor.Professor;
  * @author Humberto
  */
 public class Facade implements IFacade{
+    
+    private ControladorProfessor controlProfessor;
+    private ControladorItem controlItem;
+    private ControladorEmprestimo controlEmprestimo;
+    
+<span class="nc" id="L25">    public Facade() {</span>
+<span class="nc" id="L26">        controlProfessor = new ControladorProfessor();</span>
+<span class="nc" id="L27">        controlItem = new ControladorItem();</span>
+<span class="nc" id="L28">        controlEmprestimo = new ControladorEmprestimo();</span>
+<span class="nc" id="L29">    }</span>
 
-	private ControladorProfessor controlProfessor;
-	private ControladorItem controlItem;
-	private ControladorEmprestimo controlEmprestimo;
+    @Override
+    public int inserirProfessor(Professor p) {
+<span class="nc" id="L33">        return controlProfessor.inserir(p);</span>
+    }
 
-<span class="nc" id="L25">	public Facade() {</span>
-<span class="nc" id="L26">		controlProfessor = new ControladorProfessor();</span>
-<span class="nc" id="L27">		controlItem = new ControladorItem();</span>
-<span class="nc" id="L28">		controlEmprestimo = new ControladorEmprestimo();</span>
-<span class="nc" id="L29">	}</span>
+    @Override
+    public int removerProfessor(String siape) {
+<span class="nc" id="L38">        return controlProfessor.remover(siape);</span>
+    }
 
-	@Override
-	public int inserirProfessor(Professor p) {
-<span class="nc" id="L33">		return controlProfessor.inserir(p);</span>
-	}
+    @Override
+    public int inserirItem(Item i) {
+<span class="nc" id="L43">       return controlItem.inserir(i);</span>
+    }
 
-	@Override
-	public int removerProfessor(String siape) {
-<span class="nc" id="L38">		return controlProfessor.remover(siape);</span>
-	}
+    @Override
+    public int removerItem(String codigo) {
+<span class="nc" id="L48">        return controlItem.remover(codigo);</span>
+    }
 
-	@Override
-	public int inserirItem(Item i) {
-<span class="nc" id="L43">		return controlItem.inserir(i);</span>
-	}
+    @Override
+    public int inserirEmprestimo(Emprestimo e) {
+<span class="nc" id="L53">        return controlEmprestimo.inserir(e);</span>
+    }
 
-	@Override
-	public int removerItem(String codigo) {
-<span class="nc" id="L48">		return controlItem.remover(codigo);</span>
-	}
-
-	@Override
-	public int inserirEmprestimo(Emprestimo e) {
-<span class="nc" id="L53">		return controlEmprestimo.inserir(e);</span>
-	}
-
-	@Override
-	public int removerEmprestimo(int id) {
-<span class="nc" id="L58">		return controlEmprestimo.remover(id);</span>
-	}
-
-
+    @Override
+    public int removerEmprestimo(int id) {
+<span class="nc" id="L58">        return controlEmprestimo.remover(id);</span>
+    }
+    
+    
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

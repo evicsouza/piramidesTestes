@@ -3,7 +3,7 @@ integracao,com.ifpe.emprestimo,ControladorEmprestimo,18,0,0,0,5,0,3,0,3,0
 integracao,com.ifpe.emprestimo,Emprestimo,33,0,0,0,14,0,7,0,7,0
 integracao,com.ifpe.item,ControladorItem,18,0,0,0,5,0,3,0,3,0
 integracao,com.ifpe.item,Item,23,0,0,0,10,0,5,0,5,0
-integracao,com.ifpe.ado.emprestimo,RepositorioEmprestimo,124,0,0,0,33,0,3,0,3,0
+integracao,com.ifpe.ado.emprestimo,RepositorioEmprestimo,123,0,0,0,33,0,3,0,3,0
 integracao,com.ifpe.ado.item,RepositorioItem,122,0,0,0,33,0,3,0,3,0
 integracao,com.ifpe.ts.testes.piramide,App,7,0,0,0,3,0,2,0,2,0
 integracao,com.ifpe.facade,Facade,48,0,0,0,11,0,7,0,7,0
