@@ -20,7 +20,7 @@ integracao,com.ifpe.view,Frame.new ActionListener() {...},25,0,2,0,9,0,3,0,2,0
 integracao,com.ifpe.view,BackgrpundPane,3,0,0,0,1,0,1,0,1,0
 integracao,com.ifpe.view,Frame.MenuAction,15,0,0,0,5,0,2,0,2,0
 integracao,com.ifpe.view,Frame.new ActionListener() {...},65,0,2,0,18,0,3,0,2,0
-integracao,com.ifpe.view,Frame,584,0,0,0,126,0,9,0,9,0
+integracao,com.ifpe.view,Frame,572,0,0,0,123,0,10,0,10,0
 integracao,com.ifpe.professor,ControladorProfessor,18,0,0,0,5,0,3,0,3,0
 integracao,com.ifpe.professor,Professor,82,0,8,0,28,0,14,0,10,0
 integracao,com.ifpe.utils,Constantes,15,0,0,0,6,0,2,0,2,0
